@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
-const sqlite3 = require('sqlite3');
+// const sqlite3 = require('sqlite3');  // Non utilisé
 
 const app = express();
 
@@ -57,6 +57,8 @@ app.post('/api/login',
 );
 
 // ❌ VULNÉRABILITÉ CLASSIQUE : eval() - Exécution de code arbitraire
+// COMMENTÉ POUR EXERCICE SAST
+/*
 app.post('/api/calculate', (req, res) => {
   const expression = req.body.expression;
   
@@ -64,6 +66,7 @@ app.post('/api/calculate', (req, res) => {
   const result = eval(expression);
   res.json({ result });
 });
+*/
 
 // ✅ Endpoint de santé (sans infos sensibles)
 app.get('/health', (req, res) => {
