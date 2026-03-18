@@ -56,11 +56,19 @@ app.post('/api/login',
 );
 
 // ❌ VULNÉRABILITÉ SQL INJECTION (pour l'exercice Semgrep)
+// Fonction de requête fake pour simulation
+function executeQuery(query) {
+  return { result: query };
+}
+
 app.get('/api/user/:id', (req, res) => {
   const userId = req.params.id;
-  // Requête directe sans paramètres préparés = SQL injection
-  const query = `SELECT * FROM users WHERE id = ${userId}`;
-  res.json({ query }); // Pour debug
+  const search = req.query.search;
+  
+  // ❌ VULNERABILITY: SQL Injection direct avec string concatenation
+  const sqlQuery = "SELECT * FROM users WHERE id = " + userId + " AND name LIKE '%" + search + "%'";
+  executeQuery(sqlQuery);
+  res.json({ message: 'User found' });
 });
 
 // ✅ Endpoint de santé (sans infos sensibles)
