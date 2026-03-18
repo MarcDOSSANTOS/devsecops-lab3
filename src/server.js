@@ -55,6 +55,14 @@ app.post('/api/login',
   }
 );
 
+// ❌ VULNÉRABILITÉ SQL INJECTION (pour l'exercice Semgrep)
+app.get('/api/user/:id', (req, res) => {
+  const userId = req.params.id;
+  // Requête directe sans paramètres préparés = SQL injection
+  const query = `SELECT * FROM users WHERE id = ${userId}`;
+  res.json({ query }); // Pour debug
+});
+
 // ✅ Endpoint de santé (sans infos sensibles)
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
