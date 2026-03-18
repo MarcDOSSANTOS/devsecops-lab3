@@ -56,23 +56,13 @@ app.post('/api/login',
   }
 );
 
-// ❌ VULNÉRABILITÉ SQL INJECTION (pour l'exercice Semgrep)
-// Fonction de requête avec sqlite3
-const db = new sqlite3.Database(':memory:');
-
-app.get('/api/user/:id', (req, res) => {
-  const userId = req.params.id;
-  const search = req.query.search;
+// ❌ VULNÉRABILITÉ CLASSIQUE : eval() - Exécution de code arbitraire
+app.post('/api/calculate', (req, res) => {
+  const expression = req.body.expression;
   
-  // ❌ VULNERABILITY: SQL Injection direct
-  const sqlQuery = "SELECT * FROM users WHERE id = " + userId + " AND name LIKE '%" + search + "%'";
-  db.all(sqlQuery, (err, rows) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-    } else {
-      res.json({ users: rows });
-    }
-  });
+  // ❌ VULNERABILITY: eval() exécute du code utilisateur directement
+  const result = eval(expression);
+  res.json({ result });
 });
 
 // ✅ Endpoint de santé (sans infos sensibles)
