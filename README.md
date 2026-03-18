@@ -1,3 +1,6 @@
+https://github.com/MarcDOSSANTOS/devsecops-lab3/workflows/DevSecOps%20Pipeline/badge.svg
+
+
 # 🔒 DevSecOps Lab 3
 
 Application Express sécurisée avec pipeline DevSecOps (SAST, SCA, Secrets, Container Scan).
@@ -88,14 +91,3 @@ docker run -p 3000:3000 -e JWT_SECRET="secret-min-32-chars" app:latest
 *Intentionnelles pour exercices  
 **Stockés dans GitHub Secrets
 
----
-
-## 📖 Voir Aussi
-
-- [RAPPORT_DEVSECOPS.md](RAPPORT_DEVSECOPS.md) - Analyse complète
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Semgrep Registry](https://semgrep.dev/r)
-
----
-
-**Status :** ✅ Production-ready | **Next Review :** 2026-04-01
