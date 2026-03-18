@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
+const sqlite3 = require('sqlite3');
 
 const app = express();
 
@@ -56,19 +57,22 @@ app.post('/api/login',
 );
 
 // ❌ VULNÉRABILITÉ SQL INJECTION (pour l'exercice Semgrep)
-// Fonction de requête fake pour simulation
-function executeQuery(query) {
-  return { result: query };
-}
+// Fonction de requête avec sqlite3
+const db = new sqlite3.Database(':memory:');
 
 app.get('/api/user/:id', (req, res) => {
   const userId = req.params.id;
   const search = req.query.search;
   
-  // ❌ VULNERABILITY: SQL Injection direct avec string concatenation
+  // ❌ VULNERABILITY: SQL Injection direct
   const sqlQuery = "SELECT * FROM users WHERE id = " + userId + " AND name LIKE '%" + search + "%'";
-  executeQuery(sqlQuery);
-  res.json({ message: 'User found' });
+  db.all(sqlQuery, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.json({ users: rows });
+    }
+  });
 });
 
 // ✅ Endpoint de santé (sans infos sensibles)
